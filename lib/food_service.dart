@@ -1,10 +1,10 @@
 class FoodService {
-  String foodName = 'Salad';
-  int calories = 150;
+  String foodName = 'Pasta';
+  int type = 150;
 
   void updateFood(String name, int cal) {
     foodName = name;
-    calories = cal;
+    type = cal;
   }
 }
 

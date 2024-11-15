@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class FoodInheritedWidget extends InheritedWidget {
   final String foodName;
-  final int calories;
+  final int type;
 
   const FoodInheritedWidget({
     Key? key,
     required this.foodName,
-    required this.calories,
+    required this.type,
     required Widget child,
   }) : super(key: key, child: child);
 
@@ -15,8 +15,9 @@ class FoodInheritedWidget extends InheritedWidget {
     return context.dependOnInheritedWidgetOfExactType<FoodInheritedWidget>();
   }
 
+
   @override
   bool updateShouldNotify(FoodInheritedWidget oldWidget) {
-    return oldWidget.foodName != foodName || oldWidget.calories != calories;
+    return oldWidget.foodName != foodName || oldWidget.type != type;
   }
 }

@@ -9,38 +9,81 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final foodService = getIt<FoodService>();
     final inheritedFoodName = FoodInheritedWidget.of(context)?.foodName ?? 'Unknown';
-    final inheritedCalories = FoodInheritedWidget.of(context)?.calories ?? 0;
+    final inheritedType = FoodInheritedWidget.of(context)?.type ?? 0;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('InheritedWidget and GetIt with Food Data'),
+        title: Text('Food Info'),
+        backgroundColor: Colors.deepOrange,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'InheritedWidget: $inheritedFoodName, Calories: $inheritedCalories',
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'GetIt: ${foodService.foodName}, Calories: ${foodService.calories}',
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                foodService.updateFood('Pasta', 400);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FoodDetailsPage()),
-                );
-              },
-              child: Text('Update Food and Navigate'),
-            ),
-          ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.orangeAccent, Colors.lightGreenAccent],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
         ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: GridView.count(
+            crossAxisCount: 2, // 2 boxes per row
+            childAspectRatio: 1.2, // Adjusts the aspect ratio of the boxes
+            crossAxisSpacing: 20, // Space between columns
+            mainAxisSpacing: 20, // Space between rows
+            children: [
+              _buildFoodBox('InheritedWidget: $inheritedFoodName', 'Type: $inheritedType'),
+              _buildFoodBox('GetIt: ${foodService.foodName}', 'Type: ${foodService.type}'),
+              _buildFoodBox('Food Item 3', 'Type: 3'),
+              _buildFoodBox('Food Item 4', 'Type: 4'),
+              // Add more boxes as needed
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          foodService.updateFood('Pasta', 400);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FoodDetailsPage()),
+          );
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.deepOrange,
+      ),
+    );
+  }
+
+  Widget _buildFoodBox(String title, String subtitle) {
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 8.0,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            title,
+            style: TextStyle(fontSize: 18, color: Colors.black),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 10),
+          Text(
+            subtitle,
+            style: TextStyle(fontSize: 16, color: Colors.black54),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }
